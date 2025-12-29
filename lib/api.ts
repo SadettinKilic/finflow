@@ -35,7 +35,7 @@ export interface AllPrices {
     lastUpdate: string;
 }
 
-const API_URL = 'https://finans.truncgil.com/v4/today.json';
+const API_URL = '/api/prices'; // Use internal proxy to avoid CORS
 const CACHE_KEY = 'finflow_prices';
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
