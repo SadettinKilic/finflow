@@ -31,10 +31,8 @@ export function AssetForm({ isOpen, onClose, onSuccess }: AssetFormProps) {
     const loadCurrentPrice = async () => {
         const price = await getBuyingPrice(assetType);
         setCurrentPrice(price);
-        // Auto-fill buy price with current price if empty
-        if (!buyPrice) {
-            setBuyPrice(price.toString());
-        }
+        // Always update buy price when asset type changes (or on initial load)
+        setBuyPrice(price.toString());
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
