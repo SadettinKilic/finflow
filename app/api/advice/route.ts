@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     Yatırım tavsiyesi değildir uyarısı ekleme, sadece dostane bir öneri sun. Çok kısa tut (max 2-3 cümle).`;
 
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
