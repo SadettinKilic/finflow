@@ -32,12 +32,8 @@ export function APIStatus() {
 
         const intervalId = setInterval(async () => {
             await fetchPrices(); // Force fetch new data in background
-            // Force redraw with fresh data
             const newData = await getPrices();
-            if (newData) {
-                // Manually update lastUpdate for display purposes if API doesn't change it
-                setPrices({ ...newData, lastUpdate: new Date().toISOString() });
-            }
+            if (newData) setPrices(newData);
         }, 60000); // 60 seconds
 
         return () => clearInterval(intervalId);
@@ -47,9 +43,9 @@ export function APIStatus() {
         setLoading(true);
         try {
             await fetchPrices(); // Force fetch
-            const newData = await getPrices();
+            const newData = await getPrices(); // Get the fresh data from cache
             if (newData) {
-                setPrices({ ...newData, lastUpdate: new Date().toISOString() });
+                setPrices(newData);
             }
             setToastMessage('Fiyatlar başarıyla güncellendi');
             setShowToast(true);

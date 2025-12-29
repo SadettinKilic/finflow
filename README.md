@@ -8,7 +8,7 @@ FinFlow, gelir/gider yönetimi ve yatırım portföyünüzü (altın, döviz, em
 
 ### 🤖 Yapay Zeka Destekli Varlık Yönetimi
 FinFlow, portföyünüzü yönetirken Google Gemini AI teknolojisinden faydalanır:
-- **Otomatik Değerleme:** Aracınızın modeline ve km'sine veya evinizin metrekaresine göre yapay zeka destekli anlık fiyat tahmini.
+- **Otomatik Değerleme:** Aracınızın modeline ve km'sine veya evinizin metrekaresine göre yapay zeka destekli anlık fiyat tahmini. (Google Generative AI SDK)
 - **Yatırım Asistanı:** Bakiyenize ve güncel piyasa koşullarına göre kişiselleştirilmiş, nötr yatırım önerileri.
 
 ### 💰 Gelir/Gider Yönetimi
@@ -22,7 +22,7 @@ FinFlow, **10 farklı varlık tipi** ile tüm yatırımlarınızı tek yerden y�
 **Döviz & Emtia (Canlı Borsa Verisi):**
 - **Gram, Çeyrek, Yarım, Tam, Reşat Altın**
 - **Dolar (USD), Euro (EUR)**
-*(Fiyatlar canlı API üzerinden anlık güncellenir)*
+*(Fiyatlar canlı API üzerinden anlık güncellenir - finans.truncgil.com)*
 
 **Gayrimenkul & Taşıt (AI Değerleme):**
 - **Araba** (Marka, Model, Yıl, KM bazlı değerleme)
@@ -49,11 +49,11 @@ FinFlow, **10 farklı varlık tipi** ile tüm yatırımlarınızı tek yerden y�
 ## 🛠️ Teknolojiler
 
 - **Framework:** Next.js 14+ (App Router)
-- **AI:** Google Gemini 1.5 Flash
+- **AI:** Google Gemini (Official SDK)
 - **Database:** IndexedDB (Dexie.js)
 - **Styling:** Tailwind CSS
 - **Backend:** Vercel Serverless Functions
-- **Api:** finans.truncgil.com + Gemini AI
+- **Api:** finans.truncgil.com (Live Data) + Gemini AI
 
 ## 🚀 Kurulum
 
@@ -71,7 +71,7 @@ npm install
 3. **Environment Variable Ayarları:**
 `.env.local` dosyası oluşturun ve Gemini API anahtarınızı ekleyin:
 ```bash
-GEMINI_API_KEY=AIzaSyDBxy8Y5XevKB9dcyXxWWnW3bcjw3GXRzw
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
 ```
 
 4. **Başlatın:**

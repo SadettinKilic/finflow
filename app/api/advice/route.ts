@@ -35,10 +35,16 @@ export async function POST(request: Request) {
             advice: text
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Advice error:', error);
+
+        let errorMessage = 'Tavsiye oluşturulamadı';
+        if (error.message?.includes('429') || error.message?.includes('Quota') || error.message?.includes('Too Many Requests')) {
+            errorMessage = 'Bugünlük çok yoruldum, piyasaları analiz etmekten devrelerim ısındı. Lütfen yarın tekrar gel! 🤖💤';
+        }
+
         return NextResponse.json(
-            { success: false, error: 'Failed to generate advice' },
+            { success: false, error: errorMessage },
             { status: 500 }
         );
     }

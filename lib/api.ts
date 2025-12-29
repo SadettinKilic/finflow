@@ -102,7 +102,7 @@ export async function fetchPrices(): Promise<AllPrices | null> {
             home: { buying: 0, selling: 0, change: 0, name: 'Ev', updateDate: new Date().toISOString() },
             land: { buying: 0, selling: 0, change: 0, name: 'Arsa', updateDate: new Date().toISOString() },
             car: { buying: 0, selling: 0, change: 0, name: 'Araba', updateDate: new Date().toISOString() },
-            lastUpdate: data.Update_Date || new Date().toISOString(),
+            lastUpdate: new Date().toISOString(),
         };
 
         // Cache the prices

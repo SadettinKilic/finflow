@@ -41,7 +41,7 @@ export function InvestmentAdvisor({ balance }: InvestmentAdvisorProps) {
                 setAdvice(data.advice);
                 sessionStorage.setItem('finflow_advice', data.advice);
             } else {
-                setError('Tavsiye alınamadı. API anahtarı eksik olabilir.');
+                setError(data.error || 'Tavsiye alınamadı. API anahtarı eksik olabilir.');
             }
         } catch (err) {
             setError('Bir hata oluştu.');
