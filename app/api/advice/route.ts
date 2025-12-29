@@ -43,10 +43,4 @@ export async function POST(request: Request) {
         );
     }
 }
-console.error('Advice error:', error);
-return NextResponse.json(
-    { success: false, error: 'Failed to generate advice' },
-    { status: 500 }
-);
-    }
-}
+
