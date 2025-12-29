@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export async function POST(request: Request) {
     try {
@@ -25,6 +26,7 @@ export async function POST(request: Request) {
         } else if (type === 'home') {
             prompt = `Sen bir gayrimenkul değerleme uzmanısın. Şu özelliklerdeki evin Türkiye piyasasındaki ortalama tahmini değerini (TL) söyle:
       Konum: ${details.location}
+      Oda Sayısı: ${details.roomCount}
       Büyüklük: ${details.m2} m2
       
       Sadece tek bir sayısal değer (TL) ver. Açıklama yapma. Örn: 5000000`;
@@ -38,20 +40,14 @@ export async function POST(request: Request) {
             return NextResponse.json({ success: false, error: 'Invalid type' });
         }
 
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [{ text: prompt }]
-                }]
-            })
-        });
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-pro' });
 
-        const data = await response.json();
-        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+
+        console.log('Gemini Valuation Response:', text);
 
         // Extract number from text (remove non-numeric chars)
         const price = parseInt(text.replace(/[^0-9]/g, ''));
@@ -64,7 +60,6 @@ export async function POST(request: Request) {
             success: true,
             estimatedPrice: price
         });
-
     } catch (error) {
         console.error('Valuation error:', error);
         return NextResponse.json(

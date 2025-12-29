@@ -14,7 +14,7 @@ export function InvestmentAdvisor({ balance }: InvestmentAdvisorProps) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const getAdvice = async () => {
+    const getAdvice = async (forceRefresh = false) => {
         if (balance <= 0) {
             setAdvice('Yatırım tavsiyesi almak için önce bakiyenizi artırmalısınız.');
             return;
@@ -39,6 +39,7 @@ export function InvestmentAdvisor({ balance }: InvestmentAdvisorProps) {
 
             if (data.success) {
                 setAdvice(data.advice);
+                sessionStorage.setItem('finflow_advice', data.advice);
             } else {
                 setError('Tavsiye alınamadı. API anahtarı eksik olabilir.');
             }
@@ -50,8 +51,10 @@ export function InvestmentAdvisor({ balance }: InvestmentAdvisorProps) {
     };
 
     useEffect(() => {
-        // Auto fetch advice if balance is positive and no advice yet
-        if (balance > 0 && !advice && !loading) {
+        const cachedAdvice = sessionStorage.getItem('finflow_advice');
+        if (cachedAdvice) {
+            setAdvice(cachedAdvice);
+        } else if (balance > 0 && !loading && !advice) {
             getAdvice();
         }
     }, [balance]);
@@ -84,7 +87,7 @@ export function InvestmentAdvisor({ balance }: InvestmentAdvisorProps) {
             <Button
                 variant="ghost"
 
-                onClick={getAdvice}
+                onClick={() => getAdvice(true)}
                 disabled={loading}
                 className="mt-3 w-full text-xs text-[#94A3B8] hover:text-white flex items-center justify-center gap-1"
             >
