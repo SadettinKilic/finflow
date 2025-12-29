@@ -92,25 +92,33 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
             title="Toplam Varlık"
-            value={formatCurrency(totalAsset)}
+            value={totalAsset}
             icon={Wallet}
+            loading={loading}
+            prefix="₺"
           />
           <StatCard
             title="Bakiye"
-            value={formatCurrency(balance)}
+            value={balance}
             icon={Coins}
             trend={balance >= 0 ? 'Pozitif' : 'Negatif'}
             trendUp={balance >= 0}
+            loading={loading}
+            prefix="₺"
           />
           <StatCard
             title="Aylık Gelir"
-            value={formatCurrency(monthlyIncome)}
+            value={monthlyIncome}
             icon={TrendingUp}
+            loading={loading}
+            prefix="₺"
           />
           <StatCard
             title="Aylık Gider"
-            value={formatCurrency(monthlyExpense)}
+            value={monthlyExpense}
             icon={TrendingDown}
+            loading={loading}
+            prefix="₺"
           />
         </div>
 
