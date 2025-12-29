@@ -20,13 +20,17 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         setIsLoading(false);
     }, []);
 
-    const handleUnlock = () => {
+    const handleUnlock = async () => {
         setIsUnlocked(true);
         // Store unlock state in sessionStorage (cleared when browser tab closes)
         sessionStorage.setItem('finflow_unlocked', 'true');
+
+        // Clear old cache to force fresh 'Last Update' time
+        sessionStorage.removeItem('finflow_prices');
+
         // Fetch prices immediately on unlock
-        // Fetch prices immediately on unlock
-        fetchPrices();
+        await fetchPrices();
+
         // Dispatch unlock event for other components to reload data
         window.dispatchEvent(new Event('finflow_unlock'));
     };
