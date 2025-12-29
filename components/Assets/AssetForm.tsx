@@ -178,7 +178,9 @@ export function AssetForm({ isOpen, onClose, onSuccess }: AssetFormProps) {
                                     { value: '2+1', label: '2+1' },
                                     { value: '3+1', label: '3+1' },
                                     { value: '4+1', label: '4+1' },
+                                    { value: '4+2', label: '4+2' },
                                     { value: '5+1', label: '5+1' },
+                                    { value: '5+2', label: '5+2' },
                                     { value: 'Villa', label: 'Villa' },
                                 ]}
                             />
