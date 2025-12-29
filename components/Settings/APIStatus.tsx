@@ -115,7 +115,7 @@ export function APIStatus() {
                         ) : (
                             <div className="text-center py-6">
                                 <p className="text-red-400 mb-2">Veri alınamadı</p>
-                                <Button onClick={handleRefresh} variant="outline" size="sm">Tekrar Dene</Button>
+                                <Button onClick={handleRefresh} variant="outline">Tekrar Dene</Button>
                             </div>
                         )
                     ) : (

@@ -50,6 +50,15 @@ export default function LeaderboardPage() {
         }
     };
 
+    const formatCurrency = (amount: number) => {
+        return new Intl.NumberFormat('tr-TR', {
+            style: 'currency',
+            currency: 'TRY',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        }).format(amount);
+    };
+
     const getRankIcon = (rank: number) => {
         if (rank === 1) return '🥇';
         if (rank === 2) return '🥈';
