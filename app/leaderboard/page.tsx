@@ -1,9 +1,18 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
+import { AppLayout } from '@/components/AppLayout';
+import { Card } from '@/components/ui/Card';
+import { getCurrentUser } from '@/lib/auth';
 import { Button } from '@/components/ui/Button';
 import { RefreshCw } from 'lucide-react';
 
-// ... (imports)
+interface LeaderboardEntry {
+    rank: number;
+    nick: string;
+    totalProfit: number;
+    lastUpdate: string;
+}
 
 export default function LeaderboardPage() {
     const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
