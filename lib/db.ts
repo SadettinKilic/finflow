@@ -9,40 +9,45 @@ export interface Transaction {
     amount: number;
     date: Date;
     note?: string;
-    userId: number; // Link to user
+    userId: number;
 }
 
 export interface Asset {
     id?: number;
-    assetType: AssetType; // 7 types now
-    quantity: number; // Adet (miktar)
-    buyPrice: number; // Birim alış fiyatı
+    assetType: AssetType;
+    quantity: number;
+    buyPrice: number;
     date: Date;
-    userId: number; // Link to user
+    userId: number;
 }
 
 export interface User {
     id?: number;
-    nick: string; // Unique nickname
-    pin: string; // 4 digit PIN
+    nick: string;
+    pin: string;
     createdAt: Date;
 }
 
-// Dexie Database
+export interface Setting {
+    id?: number;
+    goldPrice?: number;
+    silverPrice?: number;
+    [key: string]: any;
+}
+
 const db = new Dexie('FinFlowDB') as Dexie & {
     transactions: EntityTable<Transaction, 'id'>;
     assets: EntityTable<Asset, 'id'>;
     users: EntityTable<User, 'id'>;
-};
+    settings: EntityTable<Setting, 'id'>; 
 
-// Schema Definition
 db.version(2).stores({
-    transactions: '++id, type, category, amount, date, userId',
-    assets: '++id, assetType, quantity, buyPrice, date, userId',
-    users: '++id, &nick, pin, createdAt', // &nick = unique index
-});
+        transactions: '++id, type, category, amount, date, userId',
+        assets: '++id, assetType, quantity, buyPrice, date, userId',
+        users: '++id, &nick, pin, createdAt',
+        settings: '++id'
+    });
 
-// Migrate old data if exists (version 1 to version 2)
 db.version(1).stores({
     transactions: '++id, type, category, amount, date, note',
     assets: '++id, assetType, weight, buyPrice, date',
