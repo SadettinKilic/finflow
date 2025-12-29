@@ -8,7 +8,7 @@ import { getCurrentUser, logoutUser } from '@/lib/auth';
 import { InvestmentAdvisor } from './Advice/InvestmentAdvisor';
 
 const navigationItems = [
-    { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+    { name: 'Genel Bakış', href: '/', icon: LayoutDashboard },
     { name: 'İşlemler', href: '/transactions', icon: ArrowLeftRight },
     { name: 'Varlıklar', href: '/assets', icon: Coins },
     { name: 'Leaderboard', href: '/leaderboard', icon: TrendingUp },

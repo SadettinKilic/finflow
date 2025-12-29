@@ -15,10 +15,26 @@ export async function registerUser(nick: string, pin: string): Promise<{ success
             return { success: false, error: 'PIN 4 haneli sayı olmalıdır' };
         }
 
-        // Check if nick already exists
-        const existing = await db.users.where('nick').equals(nick.trim().toLowerCase()).first();
-        if (existing) {
-            return { success: false, error: 'Bu nick zaten kullanılıyor' };
+        // Check if nick already exists locally
+        const existingLocal = await db.users.where('nick').equals(nick.trim().toLowerCase()).first();
+        if (existingLocal) {
+            return { success: false, error: 'Bu nick zaten kullanılıyor (Yerel)' };
+        }
+
+        // Check if nick already exists globally (Leaderboard)
+        try {
+            const checkRes = await fetch('/api/user/check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nick: nick.trim() }),
+            });
+            const checkData = await checkRes.json();
+            if (checkData.exists) {
+                return { success: false, error: 'Bu nick zaten başka bir kullanıcı tarafından alınmış' };
+            }
+        } catch (error) {
+            console.error('Global nick check failed:', error);
+            // Fallback: if API fails, allow local check to stay functional
         }
 
         // Create user

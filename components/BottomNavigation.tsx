@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { LayoutDashboard, ArrowLeftRight, Coins, TrendingUp, Settings } from 'lucide-react';
 
 const navigationItems = [
-    { name: 'Dash', href: '/', icon: LayoutDashboard },
+    { name: 'Genel Bakış', href: '/', icon: LayoutDashboard },
     { name: 'İşlemler', href: '/transactions', icon: ArrowLeftRight },
     { name: 'Varlıklar', href: '/assets', icon: Coins },
     { name: 'Liderler', href: '/leaderboard', icon: TrendingUp },

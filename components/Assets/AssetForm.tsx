@@ -155,7 +155,7 @@ export function AssetForm({ isOpen, onClose, onSuccess }: AssetFormProps) {
 
                 {/* Dynamic Fields */}
                 {assetType === 'car' && (
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <Input label="Marka" value={brand} onChange={(e) => setBrand(e.target.value)} placeholder="BMW" required />
                         <Input label="Model" value={model} onChange={(e) => setModel(e.target.value)} placeholder="320i" required />
                         <Input label="Yıl" type="number" value={year} onChange={(e) => setYear(e.target.value)} placeholder="2020" required />
@@ -164,9 +164,9 @@ export function AssetForm({ isOpen, onClose, onSuccess }: AssetFormProps) {
                 )}
 
                 {(assetType === 'home' || assetType === 'land') && (
-                    <div className="grid grid-cols-2 gap-3">
-                        <Input label="Konum (İl/İlçe)" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="İstanbul, Kadıköy" required className="col-span-2" />
-                        <Input label="Büyüklük (m²)" type="number" value={m2} onChange={(e) => setM2(e.target.value)} placeholder="100" required className={assetType === 'home' ? '' : 'col-span-2'} />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <Input label="Konum (İl/İlçe)" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="İstanbul, Kadıköy" required className="md:col-span-2" />
+                        <Input label="Büyüklük (m²)" type="number" value={m2} onChange={(e) => setM2(e.target.value)} placeholder="100" required className={assetType === 'home' ? '' : 'md:col-span-2'} />
                         {assetType === 'home' && (
                             <Select
                                 label="Oda Sayısı"
