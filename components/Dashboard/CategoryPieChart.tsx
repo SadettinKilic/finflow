@@ -1,3 +1,7 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { Card } from '../ui/Card';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend, Sector } from 'recharts';
 import { getCategoryExpenses } from '@/lib/calculations';
 
@@ -93,6 +97,7 @@ export function CategoryPieChart() {
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                         <Pie
+                            // @ts-ignore
                             activeIndex={activeIndex}
                             activeShape={renderActiveShape}
                             data={data}
