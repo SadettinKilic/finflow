@@ -119,21 +119,6 @@ export function CategoryPieChart() {
                                 />
                             ))}
                         </Pie>
-                        <Tooltip
-                            content={({ active, payload }) => {
-                                if (active && payload && payload.length) {
-                                    return (
-                                        <div className="bg-[#0F1115]/95 border border-white/10 p-3 rounded-xl shadow-2xl backdrop-blur-xl border-l-4" style={{ borderLeftColor: payload[0].payload.fill }}>
-                                            <p className="text-[#94A3B8] text-[10px] font-mono uppercase tracking-wider mb-1">{payload[0].name}</p>
-                                            <p className="text-white font-mono font-bold text-lg">
-                                                {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(payload[0].value as number)}
-                                            </p>
-                                        </div>
-                                    );
-                                }
-                                return null;
-                            }}
-                        />
                         <Legend
                             verticalAlign="bottom"
                             align="center"
@@ -143,23 +128,15 @@ export function CategoryPieChart() {
                                     <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4 px-2">
                                         {payload?.map((entry: any, index: number) => {
                                             const dataIndex = data.findIndex(d => d.category === entry.value);
-                                            const item = data[dataIndex];
                                             return (
                                                 <div
                                                     key={`legend-${index}`}
-                                                    className={`flex items-center gap-2 cursor-pointer transition-all duration-700 py-1 px-2 rounded-lg ${activeIndex === dataIndex ? 'bg-white/5 scale-105' : 'opacity-50 hover:opacity-100 hover:bg-white/5'}`}
+                                                    className={`flex items-center gap-2 cursor-pointer transition-all duration-700 py-1 px-2 rounded-lg ${activeIndex === dataIndex ? 'bg-white/10 scale-105' : 'opacity-50 hover:opacity-100 hover:bg-white/5'}`}
                                                     onMouseEnter={() => setActiveIndex(dataIndex)}
                                                     onMouseLeave={() => setActiveIndex(undefined)}
                                                 >
                                                     <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: entry.color }} />
-                                                    <div className="flex flex-col">
-                                                        <span className="text-[10px] font-medium text-white/90 leading-none">{entry.value}</span>
-                                                        {activeIndex === dataIndex && (
-                                                            <span className="text-[9px] font-mono text-[#F7931A] mt-1 animate-in fade-in slide-in-from-top-1 duration-500">
-                                                                {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(item.amount)}
-                                                            </span>
-                                                        )}
-                                                    </div>
+                                                    <span className="text-[10px] font-medium text-white/90 leading-none uppercase tracking-wider">{entry.value}</span>
                                                 </div>
                                             );
                                         })}
