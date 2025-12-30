@@ -76,16 +76,32 @@ export async function calculateMonthlyExpense(): Promise<number> {
     return transactions.reduce((sum, t) => sum + t.amount, 0);
 }
 
-// Kategori bazlı harcama dağılımı
+// Kategori bazlı harcama dağılımı (Sadece aktif ay/yıl)
 export async function getCategoryExpenses(): Promise<{ category: string; amount: number }[]> {
     const transactions = await getUserTransactions();
-    const expenses = transactions.filter(t => t.type === 'expense');
+
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    const expenses = transactions.filter(t => {
+        const date = new Date(t.date);
+        return t.type === 'expense' &&
+            date.getMonth() === currentMonth &&
+            date.getFullYear() === currentYear;
+    });
 
     const categoryMap = new Map<string, number>();
 
     expenses.forEach(expense => {
-        const current = categoryMap.get(expense.category) || 0;
-        categoryMap.set(expense.category, current + expense.amount);
+        // Eğer kategori "Diğer" ise ve not varsa, notu kategori ismi olarak kullan
+        let displayName = expense.category;
+        if (expense.category === 'Diğer' && expense.note) {
+            displayName = expense.note;
+        }
+
+        const current = categoryMap.get(displayName) || 0;
+        categoryMap.set(displayName, current + expense.amount);
     });
 
     return Array.from(categoryMap.entries()).map(([category, amount]) => ({

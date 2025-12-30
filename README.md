@@ -1,89 +1,77 @@
-# 🌊 FinFlow - Kişisel Finans & Yatırım Takibi
+# 🌊 FinFlow v3.0 - Kişisel Finans & Yatırım Takibi
 
-FinFlow, gelir/gider yönetimi ve yatırım portföyünüzü (altın, döviz, emlak, araç) takip etmenizi sağlayan, yapay zeka destekli ve **leaderboard** sistemiyle rekabetçi bir yaklaşım sunan modern Next.js uygulamasıdır.
+FinFlow, gelir/gider yönetimi ve yatırım portföyünüzü (altın, gümüş, döviz, emlak, araç) takip etmenizi sağlayan, yapay zeka destekli ve **yüzdelik kâr bazlı leaderboard** sistemiyle rekabetçi bir yaklaşım sunan modern Next.js uygulamasıdır.
 
 **Canlı Demo:** [https://finflow-teal-omega.vercel.app](https://finflow-teal-omega.vercel.app)
 
 ## ✨ Özellikler
 
-### 🤖 Yapay Zeka Destekli Varlık Yönetimi
+### 🤖 Kişiselleştirilmiş Yapay Zeka Asistanı
 FinFlow, portföyünüzü yönetirken Google Gemini AI teknolojisinden faydalanır:
-- **Otomatik Değerleme:** Aracınızın modeline ve km'sine veya evinizin metrekaresine göre yapay zeka destekli anlık fiyat tahmini. (Google Generative AI SDK)
-- **Yatırım Asistanı:** Bakiyenize ve güncel piyasa koşullarına göre kişiselleştirilmiş, nötr yatırım önerileri.
+- **Kişisel Karşılama:** Size isminizle hitap eder, güncel bakiye ve hedefinize (örn: Araba, Ev) göre analize başlar.
+- **Veri Odaklı Tavsiyeler:** Canlı piyasa verilerini analiz ederek matematiksel ve somut yatırım sepeti önerileri sunar.
+- **Otomatik Değerleme:** Aracınızın modeline/km'sine veya evinizin metrekaresine göre AI destekli anlık fiyat tahmini yapar.
 
-### 💰 Gelir/Gider Yönetimi
-- Gelir ve gider işlemleri takibi
-- Kategori bazlı harcama analizi
-- Aylık özet ve trend grafikleri
+### 💰 Gelir/Gider Yönetimi & Akıllı Grafikler
+- Gelir ve gider işlemleri takibi.
+- **Dinamik Gider Grafiği:** Sadece bulunulan ayın verilerini gösterir ve "Diğer" kategorisindeki harcamalarda not yazılıysa grafikte o notu başlık olarak kullanır.
+- Aylık özet ve trend analizleri.
+
+### 🏆 Yeni Nesil Liderlik Tablosu (Leaderboard)
+- **Yüzdelik Kâr Sistemi:** Kimin kaç TL'si olduğu değil, portföyünü yüzde kaç büyüttüğü (%58.2 gibi) baz alınır. Bu sayede gizlilik korunur ve adil bir rekabet sağlanır.
+- **Global Nickname Kontrolü:** Redis tabanlı sistem sayesinde her kullanıcının kendine özel, benzersiz bir nicki vardır.
+- **Anlık Güncelleme:** Veriler Redis (Vercel KV) üzerinde tutulur.
 
 ### 🪙 Geniş Varlık Desteği
-FinFlow, **10 farklı varlık tipi** ile tüm yatırımlarınızı tek yerden yönetmenizi sağlar:
+FinFlow, **11 farklı varlık tipi** ile tüm yatırımlarınızı tek yerden yönetmenizi sağlar:
 
 **Döviz & Emtia (Canlı Borsa Verisi):**
-- **Gram, Çeyrek, Yarım, Tam, Reşat Altın**
+- **Gram Altın, Çeyrek, Yarım, Tam, Reşat Altın**
+- **Gümüş (Gram)**
 - **Dolar (USD), Euro (EUR)**
 *(Fiyatlar canlı API üzerinden anlık güncellenir - finans.truncgil.com)*
 
 **Gayrimenkul & Taşıt (AI Değerleme):**
-- **Araba** (Marka, Model, Yıl, KM bazlı değerleme)
-- **Ev** (Konum, m² bazlı değerleme)
-- **Arsa** (Konum, m² bazlı değerleme)
+- **Araba, Ev, Arsa** (Yapay zeka analizli değerleme)
 
-### 📊 Dashboard ve Analizler
-- **Gerçek Kar/Zarar Hesabı:** Varlığın *alış tarihindeki maliyeti* ile *güncel piyasa değeri* karşılaştırılarak net kar/zarar hesaplanır.
-- Toplam varlık ve net değer (Net Worth) takibi
-- İnteraktif grafikler ve pasta dilimleri
-
-### 🏆 Leaderboard Sistemi
-- **Nick-based** rekabet sistemi
-- Toplam kar sırlaması
-- Otomatik güncellenen canlı liste
-- Serverless backend altyapısı
+### 📱 Mobil Öncelikli (App-Like) Deneyim
+- **Alt Navigasyon Menüsü:** Mobil cihazlarda kullanımı kolaylaştıran özel navigasyon barı.
+- **Responsive Layout:** Tüm ekranlarda tam uyumlu, "Uygulama" hissi veren moder tasarım.
 
 ### 🔒 Güvenlik ve Gizlilik
-- **Privacy-First:** Tüm finansal verileriniz sadece **cihazınızda (IndexedDB)** saklanır. Sunucuya asla gönderilmez.
-- Nick + PIN ile güvenli giriş
-- Oturum bazlı kilitleme
-- JSON Yedekleme/Geri Yükleme
+- **Privacy-First:** Finansal verileriniz sadece **cihazınızda (IndexedDB)** saklanır. Sunucuya sadece anonim kâr yüzdeniz gönderilir.
+- Nick + PIN ile güvenli giriş ve JSON Yedekleme/Geri Yükleme.
 
 ## 🛠️ Teknolojiler
 
-- **Framework:** Next.js 14+ (App Router)
-- **AI:** Google Gemini (Official SDK)
-- **Database:** IndexedDB (Dexie.js)
-- **Styling:** Tailwind CSS
-- **Backend:** Vercel Serverless Functions
-- **Api:** finans.truncgil.com (Live Data) + Gemini AI
+- **Frontend:** Next.js 14 (App Router), Lucide Icons, Tailwind CSS
+- **AI:** Google Gemini-1.5-Flash
+- **Database:** IndexedDB (Dexie.js) + Redis (Vercel KV)
+- **State:** React Hooks & Local Storage
+- **API:** finans.truncgil.com + Finflow AI Layer
 
 ## 🚀 Kurulum
 
-1. **Projeyi klonlayın:**
-```bash
-git clone <repository-url>
-cd finflow
-```
-
-2. **Bağımlılıkları yükleyin:**
+1. **Projeyi klonlayın ve bağımlılıkları yükleyin:**
 ```bash
 npm install
 ```
 
-3. **Environment Variable Ayarları:**
-`.env.local` dosyası oluşturun ve Gemini API anahtarınızı ekleyin:
+2. **Environment Variables:**
+`.env.local` dosyasına şunları ekleyin:
 ```bash
-GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+GEMINI_API_KEY=your_key
+KV_URL=your_redis_url
+KV_REST_API_READ_ONLY_TOKEN=your_token
+KV_REST_API_TOKEN=your_token
+KV_REST_API_URL=your_url
 ```
 
-4. **Başlatın:**
+3. **Başlatın:**
 ```bash
 npm run dev
 ```
 
-## 🌐 Deployment
-
-Bu proje Vercel üzerinde çalışmak üzere optimize edilmiştir.
-Deploy ederken **Environment Variables** kısmına `GEMINI_API_KEY` eklemeyi unutmayın.
-
 ---
-
 **Made with ❤️ using Next.js & Bitcoin DeFi Aesthetic**
+
