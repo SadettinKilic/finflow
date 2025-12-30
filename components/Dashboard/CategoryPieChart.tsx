@@ -1,14 +1,51 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
-import { Card } from '../ui/Card';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend, Sector } from 'recharts';
 import { getCategoryExpenses } from '@/lib/calculations';
 
-const COLORS = ['#F7931A', '#EA580C', '#FFD600', '#FB923C', '#FDBA74', '#FED7AA'];
+const COLORS = ['#F7931A', '#EF4444', '#10B981', '#3B82F6', '#8B5CF6', '#F59E0B', '#EC4899'];
+
+const renderActiveShape = (props: any) => {
+    const RADIAN = Math.PI / 180;
+    const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent, value } = props;
+    const sin = Math.sin(-RADIAN * midAngle);
+    const cos = Math.cos(-RADIAN * midAngle);
+    const sx = cx + (outerRadius + 10) * cos;
+    const sy = cy + (outerRadius + 10) * sin;
+    const mx = cx + (outerRadius + 30) * cos;
+    const my = cy + (outerRadius + 30) * sin;
+    const ex = sx + (cos >= 0 ? 1 : -1) * 22;
+    const ey = sy;
+    const textAnchor = cos >= 0 ? 'start' : 'end';
+
+    return (
+        <g>
+            <text x={cx} y={cy} dy={8} textAnchor="middle" fill="#fff" className="text-sm font-semibold">
+                {payload.category}
+            </text>
+            <Sector
+                cx={cx}
+                cy={cy}
+                innerRadius={innerRadius}
+                outerRadius={outerRadius + 8}
+                startAngle={startAngle}
+                endAngle={endAngle}
+                fill={fill}
+            />
+            <Sector
+                cx={cx}
+                cy={cy}
+                startAngle={startAngle}
+                endAngle={endAngle}
+                innerRadius={outerRadius + 10}
+                outerRadius={outerRadius + 12}
+                fill={fill}
+            />
+        </g>
+    );
+};
 
 export function CategoryPieChart() {
     const [data, setData] = useState<{ category: string; amount: number }[]>([]);
+    const [activeIndex, setActiveIndex] = useState<number | undefined>(undefined);
 
     useEffect(() => {
         loadData();
@@ -19,13 +56,26 @@ export function CategoryPieChart() {
         setData(categories);
     };
 
+    const onPieEnter = (_: any, index: number) => {
+        setActiveIndex(index);
+    };
+
+    const onPieLeave = () => {
+        setActiveIndex(undefined);
+    };
+
+    const onLegendEnter = (entry: any) => {
+        const index = data.findIndex(d => d.category === entry.value);
+        setActiveIndex(index);
+    };
+
     if (data.length === 0) {
         return (
             <Card>
                 <h2 className="text-xl font-heading font-semibold mb-6 gradient-text">
                     Kategori Bazlı Harcamalar
                 </h2>
-                <div className="h-[300px] flex items-center justify-center">
+                <div className="h-[350px] flex items-center justify-center">
                     <p className="text-[#94A3B8] font-body">Henüz harcama verisi yok</p>
                 </div>
             </Card>
@@ -33,56 +83,83 @@ export function CategoryPieChart() {
     }
 
     return (
-        <Card>
-            <h2 className="text-xl font-heading font-semibold mb-6 gradient-text">
-                Kategori Bazlı Harcamalar
+        <Card className="flex flex-col h-full">
+            <h2 className="text-xl font-heading font-semibold mb-2 gradient-text">
+                Kategori Bazlı Giderler
             </h2>
+            <p className="text-xs text-[#94A3B8] mb-6 font-mono uppercase tracking-widest">Aylık Dağılım</p>
 
-            <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                    <Pie
-                        data={data}
-                        dataKey="amount"
-                        nameKey="category"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={100}
-                        labelLine={false}
-                        label={({ cx, cy, midAngle = 0, innerRadius, outerRadius, percent = 0 }) => {
-                            const RADIAN = Math.PI / 180;
-                            const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-                            const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                            const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-                            return percent > 0.05 ? (
-                                <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" className="text-xs font-mono font-bold">
-                                    {(percent * 100).toFixed(0)}%
-                                </text>
-                            ) : null;
-                        }}
-                    >
-                        {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                    </Pie>
-                    <Tooltip
-                        contentStyle={{
-                            backgroundColor: '#0F1115',
-                            border: '1px solid rgba(255,255,255,0.1)',
-                            borderRadius: '8px',
-                            fontFamily: 'var(--font-inter)',
-                            color: '#fff',
-                        }}
-                        itemStyle={{ color: '#fff' }}
-                    />
-                    <Legend
-                        wrapperStyle={{
-                            fontFamily: 'var(--font-inter)',
-                            fontSize: 14,
-                        }}
-                    />
-                </PieChart>
-            </ResponsiveContainer>
+            <div className="flex-1 min-h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                        <Pie
+                            activeIndex={activeIndex}
+                            activeShape={renderActiveShape}
+                            data={data}
+                            dataKey="amount"
+                            nameKey="category"
+                            cx="50%"
+                            cy="45%"
+                            innerRadius={70}
+                            outerRadius={95}
+                            paddingAngle={5}
+                            onMouseEnter={onPieEnter}
+                            onMouseLeave={onPieLeave}
+                            stroke="none"
+                        >
+                            {data.map((entry, index) => (
+                                <Cell
+                                    key={`cell-${index}`}
+                                    fill={COLORS[index % COLORS.length]}
+                                    style={{
+                                        filter: activeIndex === index ? 'drop-shadow(0 0 8px rgba(247, 147, 26, 0.4))' : 'none',
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                />
+                            ))}
+                        </Pie>
+                        <Tooltip
+                            content={({ active, payload }) => {
+                                if (active && payload && payload.length) {
+                                    return (
+                                        <div className="bg-[#0F1115] border border-white/10 p-3 rounded-xl shadow-2xl backdrop-blur-md">
+                                            <p className="text-white font-bold mb-1">{payload[0].name}</p>
+                                            <p className="text-[#F7931A] font-mono text-lg">
+                                                {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(payload[0].value as number)}
+                                            </p>
+                                        </div>
+                                    );
+                                }
+                                return null;
+                            }}
+                        />
+                        <Legend
+                            onMouseEnter={onLegendEnter}
+                            onMouseLeave={onPieLeave}
+                            verticalAlign="bottom"
+                            height={36}
+                            content={(props) => {
+                                const { payload } = props;
+                                return (
+                                    <div className="flex flex-wrap justify-center gap-4 mt-4">
+                                        {payload?.map((entry: any, index: number) => (
+                                            <div
+                                                key={`legend-${index}`}
+                                                className={`flex items-center gap-2 cursor-pointer transition-all duration-300 ${activeIndex === index ? 'scale-110' : 'opacity-70 hover:opacity-100'}`}
+                                                onMouseEnter={() => onPieEnter(null, index)}
+                                                onMouseLeave={onPieLeave}
+                                            >
+                                                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: entry.color }} />
+                                                <span className="text-xs font-medium text-white/80">{entry.value}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                );
+                            }}
+                        />
+                    </PieChart>
+                </ResponsiveContainer>
+            </div>
         </Card>
     );
 }
